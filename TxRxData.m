@@ -2,13 +2,13 @@
 
 y = audioread('CantinaBand3.wav');
 y_new = (y+1)*127;
-% y_out = typecast(y_new,'uint8');
+%y_out = typecast(y_new,'uint8');
 
 fileID = fopen('wav_source_test.txt','W');
 fwrite(fileID,y_new);
 fclose(fileID);
 
-% soundsc(y,20e3)
+soundsc(y,20e3)
 
 %% Comparing transmitted and received data
 
@@ -40,7 +40,7 @@ g = fopen('rx_test.txt');
 rx_values = fread(g);
 fclose(g);
 
-tx_new = tx_values/127-1;
-rx_new = rx_values/127-1;
+%tx_new = tx_values/127-1;
+%rx_new = rx_values/127-1;
 
-soundsc(tx_new,20e3)
+%soundsc(tx_values,12e3)
