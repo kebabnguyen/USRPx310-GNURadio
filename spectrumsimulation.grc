@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: no_gui
     hier_block_src_path: '.:'
-    id: sandbox
+    id: spectrumsimulation
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: run
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: sandbox
+    title: spectrumsimulation
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -324,3 +324,4 @@ connections:
 
 metadata:
   file_format: 1
+  grc_version: v3.11.0.0git-38-g72311c07
