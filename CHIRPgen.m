@@ -13,7 +13,8 @@ t_s = linspace(0,T,N); % time vector
 
 % Baseband chirp generation
 
-s = exp(1i*pi*(B/T)*t_s.^2); % LFM
+LFM = exp(1i*pi*(B/T)*t_s.^2); % LFM
+s = [LFM zeros(1,N)]; % pulse and listening interval
 s = s/norm(s); % power normalizing
 
 % Writing binary to text file
@@ -29,9 +30,9 @@ fclose(fileID_im);
 % Graph
 
 figure(1)
-plot(t_s/T,real(s))
+plot(t_s/T,real(LFM))
 hold on
-plot(t_s/T,imag(s))
+plot(t_s/T,imag(LFM))
 hold off
 legend('\Re(s)','\Im(s)')
 xlabel('Normalized Time (1 \cdot T)')
