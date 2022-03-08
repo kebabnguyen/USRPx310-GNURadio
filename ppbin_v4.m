@@ -1,7 +1,8 @@
 function decidevec = ppbin_v4(filename, numsnaps) %add a threshold control?
 
-%ppbin_v4 Sfeed it a filename (binary from gnuradio text sink) and how many
-%frequency domain samples there are, and it'll take a look and decide how
+%ppbin_v4 given freq domain data, output what bins seem to be occupied
+%looks at how many frequency domain samples there are, 
+%and it'll take a look and decide how
 %many signals are present (how many fftbins have a power higher than the
 %noise floor)
 %   really this checks for how many bins have a prominence higher than
@@ -21,7 +22,7 @@ stdev = std(avgs);
 %depending on toplevel flow it might be more efficient to send just peak
 %indices rather than an entire decision vector
 %also, we'll probably want to include guard indices to be safe; the peak
-%indices thus far
+%indices thus far don't completely reflect what's going on in freq domain
 dec = zeros(fftlen,1);
 dec(locs) = 1;
 decidevec = dec;
