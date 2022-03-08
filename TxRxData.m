@@ -26,30 +26,16 @@ h = fopen('wav_source_test.txt');
 og_values = fread(h);
 fclose(h);
 
-% Establishing "oof rate" -- measure of error in rx data compared to tx data
+% Establishing "error rate" -- measure of error in rx data compared to tx data
 
 test = tx_values(1:length(rx_values)) & rx_values;
-
-oof = 0;
+error = 0;
 for ii = 1:length(test)
     if test(ii,1) == 0
-        oof = oof + 1;
-        disp(ii)
+        error = error + 1;
     end
 end
-oof_rate = oof/length(rx_values)*100;
-
-% Establishing "whoopsie rate" -- measure of error in tx data compared to og data
-
-tx_acc = og_values(1:length(tx_values)) & tx_values;
-
-whoopsie = 0;
-for ii = 1:length(tx_acc)
-    if tx_acc(ii,1) ==0
-        whoopsie = whoopsie + 1;
-    end
-end
-whoopsie_rate = whoopsie/length(tx_values)*100;
+error_rate = error/length(rx_values)*100;
 
 % Establishing rate of return
 
@@ -78,4 +64,4 @@ rx_new = rx_values/127-1;
 
 % Playing received data as audio
 
-soundsc(rx_new,Fs)
+soundsc(rx_new,Fs) % use clear sound to stop playing
