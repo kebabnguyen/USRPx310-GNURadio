@@ -1,4 +1,4 @@
-function decidevec = ppbin_v4(filename, numsnaps) %add a threshold control?
+function occbins = ppbin_v4(filename, numsnaps, guardbands) %add a threshold control?
 
 %ppbin_v4 given freq domain data, output what bins seem to be occupied
 %looks at how many frequency domain samples there are, 
@@ -23,6 +23,15 @@ stdev = std(avgs);
 %indices rather than an entire decision vector
 %also, we'll probably want to include guard indices to be safe; the peak
 %indices thus far don't completely reflect what's going on in freq domain
-dec = zeros(fftlen,1);
-dec(locs) = 1;
-decidevec = dec;
+
+
+modlocsL = zeros(length(locs)*guardbands,1);
+modlocsR = zeros(length(locs)*guardbands,1);
+for j = 1:length(locs) %for each peak found
+    for i = 1:guardbands %we wanna stretch it out by guardband amount on both sides of every peak
+        modlocsL(length(locs)*i-(length(locs)-1):length(locs)*i) = locs - i;
+        modlocsR(length(locs)*i-(length(locs)-1):length(locs)*i) = locs + i;
+    end
+end
+modlocsA = [locs; modlocsL; modlocsR];
+occbins = modlocsA;
