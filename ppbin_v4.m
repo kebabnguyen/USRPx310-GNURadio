@@ -17,8 +17,8 @@ breakval = reshape(v,[fftlen numsnaps]); %break v up into fftlen rows and numsna
 avgs = mean(breakval,2);
 %variance = var(avgs);
 stdev = std(avgs);
-[~, locs] = findpeaks(avgs, "MinPeakProminence", 3*stdev); %4*var or 3*std seems sufficient
-
+%[~, locs] = findpeaks(avgs, "MinPeakProminence", 3*stdev); %4*var or 3*std seems sufficient
+[~, locs] = findpeaks(avgs, "MinPeakHeight", ceil(mean(avgs))); %taking ceil avg seems to work for the cases
 %depending on toplevel flow it might be more efficient to send just peak
 %indices rather than an entire decision vector
 %also, we'll probably want to include guard indices to be safe; the peak

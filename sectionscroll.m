@@ -10,7 +10,7 @@ function freesections = sectionscroll(occupiedbins,sections)
 %bins
 
 
-for i = 1:length(sections(1,:))
+for i = 1:length(sections(:,1))
     if(isempty(intersect(sections(i,:),occupiedbins))) %if there's no intersect
         freeind(i,1) = i;
     else

@@ -123,7 +123,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_items: '1024'
+    num_items: fftlen
     type: complex
     vlen: '1'
   states:
@@ -146,7 +146,7 @@ blocks:
     nthreads: '2'
     shift: 'True'
     type: complex
-    window: window.blackmanharris(1024)
+    window: window.blackmanharris(fftlen)
   states:
     bus_sink: false
     bus_source: false
@@ -163,7 +163,7 @@ blocks:
     label: length_fft
     short_id: ''
     type: intx
-    value: '1024'
+    value: '64'
   states:
     bus_sink: false
     bus_source: false
@@ -180,7 +180,7 @@ blocks:
     label: output_filename
     short_id: ''
     type: str
-    value: ./readingcenter91M.txt
+    value: ./readingcenter91M64bins.txt
   states:
     bus_sink: false
     bus_source: false

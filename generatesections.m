@@ -6,5 +6,5 @@ sections = zeros(sectionlen,numsections);
 for i = 1:numsections
     sections(i,:) =  (sectionlen*(i-1)+1:sectionlen*i);
 end
-sectiontable = sections; %each section's bins are stored in sectionable(i,:)
+sectiontable = sections; %each section's bins are stored in sectiontable(i,:)
 end
