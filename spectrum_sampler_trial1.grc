@@ -33,18 +33,6 @@ options:
     state: enabled
 
 blocks:
-- name: samp_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: '1920000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [208, 20.0]
-    rotation: 0
-    state: enabled
 - name: blocks_complex_to_mag_squared_0
   id: blocks_complex_to_mag_squared
   parameters:
@@ -58,7 +46,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [736, 412.0]
+    coordinate: [744, 420.0]
     rotation: 0
     state: true
 - name: blocks_file_sink_0
@@ -112,7 +100,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [248, 508.0]
+    coordinate: [256, 540.0]
     rotation: 0
     state: true
 - name: blocks_stream_to_vector_0
@@ -151,7 +139,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [456, 380.0]
+    coordinate: [448, 388.0]
     rotation: 0
     state: true
 - name: fftlen
@@ -202,7 +190,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [312, 20.0]
+    coordinate: [320, 20.0]
     rotation: 0
     state: true
 - name: numsnaps
@@ -236,7 +224,24 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [416, 20.0]
+    coordinate: [440, 20.0]
+    rotation: 0
+    state: true
+- name: samp_rate
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: sample rate
+    short_id: ''
+    type: intx
+    value: '1920000'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [200, 20.0]
     rotation: 0
     state: true
 - name: uhd_usrp_source_0
@@ -698,7 +703,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [24, 452.0]
+    coordinate: [40, 420.0]
     rotation: 0
     state: true
 

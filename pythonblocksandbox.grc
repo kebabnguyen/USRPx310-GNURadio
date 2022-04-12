@@ -45,24 +45,6 @@ blocks:
     coordinate: [184, 12]
     rotation: 0
     state: enabled
-- name: blocks_file_sink_0
-  id: blocks_file_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    append: 'False'
-    comment: ''
-    file: /home/crypie86/Desktop/blech.txt
-    type: byte
-    unbuffered: 'False'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1216, 300.0]
-    rotation: 0
-    state: true
 - name: blocks_message_debug_0
   id: blocks_message_debug
   parameters:
@@ -75,6 +57,23 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [824, 160.0]
+    rotation: 0
+    state: true
+- name: blocks_null_sink_0
+  id: blocks_null_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_sink: '[[0,],]'
+    comment: ''
+    num_inputs: '1'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 376.0]
     rotation: 0
     state: true
 - name: blocks_null_source_0
@@ -112,7 +111,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 352.0]
+    coordinate: [808, 292.0]
     rotation: 0
     state: true
 - name: epy_block_0
@@ -125,25 +124,27 @@ blocks:
       from gnuradio import gr\nimport matlab.engine\nimport pmt\n\neng = matlab.engine.start_matlab()\n\
       class blk(gr.sync_block):  # other base classes are basic_block, decim_block,\
       \ interp_block\n    \"\"\"Embedded Python Block example - a simple multiply\
-      \ const\"\"\"\n\n    def __init__(self):  # only default arguments here\n  \
-      \      \"\"\"arguments to this function show up as parameters in GRC\"\"\"\n\
-      \        gr.sync_block.__init__(\n            self,\n            name='Call\
-      \ MATLAB executive',   # will show up in GRC\n            in_sig=[np.byte],\n\
-      \            out_sig=[np.byte]\n            \n    \n        )\n        self.message_port_register_out(pmt.intern('chosen\
+      \ const\"\"\"\n\n    def __init__(self, filename = 'readingcenter91M64bins.txt'):\
+      \  # only default arguments here\n        \"\"\"arguments to this function show\
+      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
+      \   self,\n            name='Call MATLAB executive(filename)',   # will show\
+      \ up in GRC\n            in_sig=[np.byte],\n            out_sig=[np.byte]\n\
+      \            \n    \n        )\n        self.filename = filename\n        self.message_port_register_out(pmt.intern('chosen\
       \ bins'))\n        # if an attribute with the same name as a parameter is found,\n\
       \        # a callback is registered (properties work, too).\n        \n\n  \
-      \  def work(self, input_items, output_items):\n        print('oh i guess it\
-      \ needs to initialize')\n        test = eng.executive()\n        print(test)\n\
-      \        output_items[0][:] = test\n        return len(output_items[0])\n"
+      \  def work(self, input_items, output_items):\n        whee = pmt.to_pmt(eng.executive(self.filename))\n\
+      \        self.message_port_pub(pmt.intern('chosen bins'), whee)\n        output_items[0][:]\
+      \ = 1\n        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
+    filename: '''noise1kcos.txt'''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Call MATLAB executive', 'blk', [], [('0', 'byte', 1)], [('0', 'byte',
-      1), ('chosen bins', 'message', 1)], 'Embedded Python Block example - a simple
-      multiply const', [])
+    _io_cache: ('Call MATLAB executive(filename)', 'blk', [('filename', "'readingcenter91M64bins.txt'")],
+      [('0', 'byte', 1)], [('0', 'byte', 1), ('chosen bins', 'message', 1)], 'Embedded
+      Python Block example - a simple multiply const', ['filename'])
     bus_sink: false
     bus_source: false
     bus_structure: null
@@ -153,9 +154,10 @@ blocks:
 
 connections:
 - [blocks_null_source_0, '0', epy_block_0, '0']
-- [blocks_throttle_0, '0', blocks_file_sink_0, '0']
+- [blocks_throttle_0, '0', blocks_null_sink_0, '0']
 - [epy_block_0, '0', blocks_throttle_0, '0']
 - [epy_block_0, chosen bins, blocks_message_debug_0, print]
 
 metadata:
   file_format: 1
+  grc_version: v3.11.0.0git-38-g72311c07
