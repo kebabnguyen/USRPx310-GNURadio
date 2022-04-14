@@ -328,6 +328,24 @@ blocks:
     coordinate: [1544, 2140.0]
     rotation: 0
     state: true
+- name: blocks_file_sink_1
+  id: blocks_file_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    comment: ''
+    file: /nfs/users/j149q328/Documents/junk.txt
+    type: complex
+    unbuffered: 'False'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 908.0]
+    rotation: 0
+    state: true
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -350,6 +368,28 @@ blocks:
     coordinate: [240, 304.0]
     rotation: 0
     state: true
+- name: blocks_file_source_1
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: /nfs/users/j149q328/Documents/e.bin
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'False'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 788.0]
+    rotation: 0
+    state: true
 - name: blocks_message_debug_0
   id: blocks_message_debug
   parameters:
@@ -364,6 +404,20 @@ blocks:
     coordinate: [1640, 2264.0]
     rotation: 0
     state: disabled
+- name: blocks_message_debug_1
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    en_uvec: 'True'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 976.0]
+    rotation: 0
+    state: true
 - name: blocks_multiply_const_vxx_0
   id: blocks_multiply_const_vxx
   parameters:
@@ -829,7 +883,7 @@ blocks:
       \ 'msg_in'\n        self.message_port_register_in(pmt.intern(self.selectPortName))\n\
       \        self.set_msg_handler(pmt.intern(self.selectPortName), self.handle_msg)\n\
       \        self.pattern = 0\n        \n    def handle_msg(self, msg):\n    \t\
-      self.pattern = pmt.to_pmt(msg)\n    \t\n    def work(self, input_items, output_items):\n\
+      self.pattern = pmt.to_python(msg)\n    \t\n    def work(self, input_items, output_items):\n\
       \        pkey = pmt.intern(self.key)\n        ppattern = pmt.to_pmt(self.pattern)\n\
       \        ppacket = pmt.to_pmt(self.packet_key)\n        for i, sample in enumerate(input_items[0]):\n\
       \            t = self.nitems_written(0) + i\n            #this seems like a\
@@ -1006,6 +1060,41 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [496, 356.0]
+    rotation: 0
+    state: true
+- name: epy_block_3
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport pmt\n\n\nclass blk(gr.sync_block):  # other\
+      \ base classes are basic_block, decim_block, interp_block\n    \"\"\"Embedded\
+      \ Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self):\
+      \  # only default arguments here\n        \"\"\"arguments to this function show\
+      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
+      \   self,\n            name='ass',   # will show up in GRC\n            in_sig=[np.complex64],\n\
+      \            out_sig=[np.complex64]\n        )\n        # if an attribute with\
+      \ the same name as a parameter is found,\n        # a callback is registered\
+      \ (properties work, too).\n        self.PortName = 'msg_out'\n        self.message_port_register_out(pmt.intern(self.PortName))\n\
+      \        self.pattern = 0\n        \n\n    def work(self, input_items, output_items):\n\
+      \        \"\"\"example: multiply with constant\"\"\"\n        if len(output_items[0])>0:\n\
+      \        \toutput_items[0][:] = input_items[0]\n        \tmsg = pmt.to_pmt(self.pattern)\n\
+      \        \tself.message_port_pub(pmt.intern(self.PortName), msg)\n        return\
+      \ len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('ass', 'blk', [], [('0', 'complex', 1)], [('0', 'complex', 1), ('msg_out',
+      'message', 1)], 'Embedded Python Block example - a simple multiply const', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [224, 848.0]
     rotation: 0
     state: true
 - name: fft_vxx_0
@@ -1385,6 +1474,7 @@ connections:
 - [analog_frequency_modulator_fc_0, '0', blocks_multiply_xx_0, '0']
 - [blocks_delay_0, '0', blocks_multiply_xx_0, '1']
 - [blocks_file_source_0, '0', epy_block_2, '0']
+- [blocks_file_source_1, '0', epy_block_3, '0']
 - [blocks_multiply_const_vxx_0, '0', blocks_tag_gate_0, '0']
 - [blocks_multiply_xx_0, '0', digital_header_payload_demux_0, '0']
 - [blocks_repack_bits_bb_0, '0', virtual_sink_0_0, '0']
@@ -1424,6 +1514,9 @@ connections:
 - [epy_block_1, msg_out, blocks_message_debug_0, print]
 - [epy_block_2, '0', blocks_file_sink_0, '0']
 - [epy_block_2, '0', blocks_stream_to_tagged_stream_0, '0']
+- [epy_block_3, '0', blocks_file_sink_1, '0']
+- [epy_block_3, msg_out, blocks_message_debug_1, print]
+- [epy_block_3, msg_out, epy_block_0, msg_in]
 - [fft_vxx_0, '0', digital_ofdm_cyclic_prefixer_0, '0']
 - [fft_vxx_0_0, '0', digital_ofdm_chanest_vcvc_0, '0']
 - [fft_vxx_1, '0', digital_ofdm_frame_equalizer_vcvc_1, '0']
