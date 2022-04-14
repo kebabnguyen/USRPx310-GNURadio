@@ -830,14 +830,14 @@ blocks:
       \        self.set_msg_handler(pmt.intern(self.selectPortName), self.handle_msg)\n\
       \        self.pattern = 0\n        \n    def handle_msg(self, msg):\n    \t\
       self.pattern = pmt.to_pmt(msg)\n    \t\n    def work(self, input_items, output_items):\n\
-      \        pkey = pmt.intern(self.key)\n        #ppattern = pmt.to_pmt(self.pattern)\n\
+      \        pkey = pmt.intern(self.key)\n        ppattern = pmt.to_pmt(self.pattern)\n\
       \        ppacket = pmt.to_pmt(self.packet_key)\n        for i, sample in enumerate(input_items[0]):\n\
       \            t = self.nitems_written(0) + i\n            #this seems like a\
       \ \"hacky\" way of doing this, but it works and I can't find any other way\n\
       \            tags = self.get_tags_in_range(0, t, t+1,ppacket)\n            if\
       \ (len(tags) != 0):\n                self.add_item_tag(0, self.nitems_written(0)+i,\
-      \ pkey, self.pattern)\n        output_items[0][:] = input_items[0]\n       \
-      \ return len(output_items[0])\n"
+      \ pkey, ppattern)\n        output_items[0][:] = input_items[0]\n        return\
+      \ len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -870,14 +870,14 @@ blocks:
       \        self.set_msg_handler(pmt.intern(self.selectPortName), self.handle_msg)\n\
       \        self.pattern = 0\n        \n    def handle_msg(self, msg):\n    \t\
       self.pattern = pmt.to_pmt(msg)\n    \t\n    def work(self, input_items, output_items):\n\
-      \        pkey = pmt.intern(self.key)\n        #ppattern = pmt.to_pmt(self.pattern)\n\
+      \        pkey = pmt.intern(self.key)\n        ppattern = pmt.to_pmt(self.pattern)\n\
       \        ppacket = pmt.to_pmt(self.packet_key)\n        for i, sample in enumerate(input_items[0]):\n\
       \            t = self.nitems_written(0) + i\n            #this seems like a\
       \ \"hacky\" way of doing this, but it works and I can't find any other way\n\
       \            tags = self.get_tags_in_range(0, t, t+1,ppacket)\n            if\
       \ (len(tags) != 0):\n                self.add_item_tag(0, self.nitems_written(0)+i,\
-      \ pkey, self.pattern)\n        output_items[0][:] = input_items[0]\n       \
-      \ return len(output_items[0])\n"
+      \ pkey, ppattern)\n        output_items[0][:] = input_items[0]\n        return\
+      \ len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
