@@ -828,15 +828,16 @@ blocks:
       \    self.packet_key = packet_key;\n        \n        self.selectPortName =\
       \ 'msg_in'\n        self.message_port_register_in(pmt.intern(self.selectPortName))\n\
       \        self.set_msg_handler(pmt.intern(self.selectPortName), self.handle_msg)\n\
-      \        \n    def handle_msg(self, msg):\n    \tself.pattern = pmt.to_pmt(msg)\n\
-      \    \t\n    def work(self, input_items, output_items):\n        pkey = pmt.intern(self.key)\n\
-      \        ppattern = pmt.to_pmt(self.pattern)\n        ppacket = pmt.to_pmt(self.packet_key)\n\
-      \        for i, sample in enumerate(input_items[0]):\n            t = self.nitems_written(0)\
-      \ + i\n            #this seems like a \"hacky\" way of doing this, but it works\
-      \ and I can't find any other way\n            tags = self.get_tags_in_range(0,\
-      \ t, t+1,ppacket)\n            if (len(tags) != 0):\n                self.add_item_tag(0,\
-      \ self.nitems_written(0)+i, pkey, ppattern)\n        output_items[0][:] = input_items[0]\n\
-      \        return len(output_items[0])\n"
+      \        self.pattern = 0\n        \n    def handle_msg(self, msg):\n    \t\
+      self.pattern = pmt.to_pmt(msg)\n    \t\n    def work(self, input_items, output_items):\n\
+      \        pkey = pmt.intern(self.key)\n        #ppattern = pmt.to_pmt(self.pattern)\n\
+      \        ppacket = pmt.to_pmt(self.packet_key)\n        for i, sample in enumerate(input_items[0]):\n\
+      \            t = self.nitems_written(0) + i\n            #this seems like a\
+      \ \"hacky\" way of doing this, but it works and I can't find any other way\n\
+      \            tags = self.get_tags_in_range(0, t, t+1,ppacket)\n            if\
+      \ (len(tags) != 0):\n                self.add_item_tag(0, self.nitems_written(0)+i,\
+      \ pkey, self.pattern)\n        output_items[0][:] = input_items[0]\n       \
+      \ return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -859,20 +860,24 @@ blocks:
   parameters:
     _source_code: "import numpy as np\nfrom gnuradio import gr\nimport pmt\n\nclass\
       \ blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block\n\
-      \n    def __init__(self, key = \"sc_tag_key\", pattern = 0, packet_key = \"\
-      packet_len\", vlen = 64):  # only default arguments here\n        gr.sync_block.__init__(\n\
+      \n    def __init__(self, key = \"sc_tag_key\", packet_key = \"packet_len\",\
+      \ vlen = 64):  # only default arguments here\n        gr.sync_block.__init__(\n\
       \            self,\n            name='OFDMA Controller: vector',   # will show\
       \ up in GRC\n            in_sig=[(np.complex64,vlen)],\n            out_sig=[(np.complex64,vlen)]\n\
-      \        )\n\n        self.key = key;\n        self.pattern = pattern;\n   \
-      \     self.packet_key = packet_key;\n\n    def work(self, input_items, output_items):\n\
-      \        pkey = pmt.intern(self.key)\n        ppattern = pmt.to_pmt(self.pattern)\n\
+      \        )\n\n        self.key = key;\n        #self.pattern = pattern;\n  \
+      \      self.packet_key = packet_key;\n        \n        self.selectPortName\
+      \ = 'msg2'\n        self.message_port_register_in(pmt.intern(self.selectPortName))\n\
+      \        self.set_msg_handler(pmt.intern(self.selectPortName), self.handle_msg)\n\
+      \        self.pattern = 0\n        \n    def handle_msg(self, msg):\n    \t\
+      self.pattern = pmt.to_pmt(msg)\n    \t\n    def work(self, input_items, output_items):\n\
+      \        pkey = pmt.intern(self.key)\n        #ppattern = pmt.to_pmt(self.pattern)\n\
       \        ppacket = pmt.to_pmt(self.packet_key)\n        for i, sample in enumerate(input_items[0]):\n\
       \            t = self.nitems_written(0) + i\n            #this seems like a\
       \ \"hacky\" way of doing this, but it works and I can't find any other way\n\
       \            tags = self.get_tags_in_range(0, t, t+1,ppacket)\n            if\
       \ (len(tags) != 0):\n                self.add_item_tag(0, self.nitems_written(0)+i,\
-      \ pkey, ppattern)\n        output_items[0][:] = input_items[0]\n        return\
-      \ len(output_items[0])\n"
+      \ pkey, self.pattern)\n        output_items[0][:] = input_items[0]\n       \
+      \ return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -880,13 +885,12 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     packet_key: length_tag_key
-    pattern: sc
     vlen: fft_len
   states:
     _io_cache: '(''OFDMA Controller: vector'', ''blk'', [(''key'', "''sc_tag_key''"),
-      (''pattern'', ''0''), (''packet_key'', "''packet_len''"), (''vlen'', ''64'')],
-      [(''0'', ''complex'', 64)], [(''0'', ''complex'', 64)], '''', [''key'', ''packet_key'',
-      ''pattern''])'
+      (''packet_key'', "''packet_len''"), (''vlen'', ''64'')], [(''0'', ''complex'',
+      64), (''msg2'', ''message'', 1)], [(''0'', ''complex'', 64)], '''', [''key'',
+      ''packet_key''])'
     bus_sink: false
     bus_source: false
     bus_structure: null
