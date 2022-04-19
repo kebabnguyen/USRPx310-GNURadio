@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: no_gui
     hier_block_src_path: '.:'
-    id: spectrumsimulation
+    id: sandbox
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: run
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: spectrumsimulation
+    title: sandbox
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -61,7 +61,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 204.0]
+    coordinate: [304, 188.0]
     rotation: 0
     state: true
 - name: analog_sig_source_x_0
@@ -83,29 +83,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [32, 300.0]
-    rotation: 0
-    state: true
-- name: analog_sig_source_x_0_0
-  id: analog_sig_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: '1'
-    comment: ''
-    freq: '5000'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    phase: '0'
-    samp_rate: samp_rate
-    type: float
-    waveform: analog.GR_COS_WAVE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [216, 100.0]
+    coordinate: [504, 60.0]
     rotation: 0
     state: true
 - name: blocks_complex_to_mag_squared_0
@@ -116,7 +94,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    vlen: '1024'
+    vlen: '64'
   states:
     bus_sink: false
     bus_source: false
@@ -131,10 +109,10 @@ blocks:
     alias: ''
     append: 'False'
     comment: ''
-    file: /home/crypie86/Desktop/noise1kcos5kcos.txt
+    file: filename
     type: float
     unbuffered: 'False'
-    vlen: '1024'
+    vlen: '64'
   states:
     bus_sink: false
     bus_source: false
@@ -152,7 +130,7 @@ blocks:
     minoutbuf: '0'
     num_items: '4'
     type: float
-    vlen: '1024'
+    vlen: '64'
   states:
     bus_sink: false
     bus_source: false
@@ -170,7 +148,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     n: '1'
-    vlen: '1024'
+    vlen: '64'
   states:
     bus_sink: false
     bus_source: false
@@ -184,10 +162,10 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    lengths: (1, 1,1)
+    lengths: (1, 1)
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_inputs: '3'
+    num_inputs: '2'
     type: float
     vlen: '1'
   states:
@@ -205,7 +183,7 @@ blocks:
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    num_items: '1024'
+    num_items: '64'
     type: float
     vlen: '1'
   states:
@@ -240,19 +218,36 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    fft_size: '1024'
+    fft_size: '64'
     forward: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
     nthreads: '2'
     shift: 'True'
     type: float
-    window: window.blackmanharris(1024)
+    window: window.blackmanharris(64)
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
     coordinate: [632, 404.0]
+    rotation: 0
+    state: true
+- name: filename
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: output_filename
+    short_id: ''
+    type: str
+    value: ./noise1kcos.txt
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [808, 28.0]
     rotation: 0
     state: true
 - name: virtual_sink_0
@@ -278,7 +273,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 204.0]
+    coordinate: [904, 188.0]
     rotation: 0
     state: true
 - name: virtual_source_0
@@ -310,8 +305,7 @@ blocks:
 
 connections:
 - [analog_noise_source_x_0, '0', blocks_stream_mux_0, '1']
-- [analog_sig_source_x_0, '0', blocks_stream_mux_0, '2']
-- [analog_sig_source_x_0_0, '0', blocks_stream_mux_0, '0']
+- [analog_sig_source_x_0, '0', blocks_stream_mux_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', blocks_nlog10_ff_0, '0']
 - [blocks_head_0, '0', blocks_file_sink_0, '0']
 - [blocks_nlog10_ff_0, '0', blocks_head_0, '0']
@@ -324,4 +318,3 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: v3.11.0.0git-38-g72311c07

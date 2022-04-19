@@ -9,7 +9,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: qt_gui
+    generate_options: no_gui
     hier_block_src_path: '.:'
     id: pythonblocksandbox
     max_nouts: '0'
@@ -22,7 +22,7 @@ options:
     run_options: prompt
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: Not titled yet
+    title: pythonblocksandbox
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -45,20 +45,6 @@ blocks:
     coordinate: [184, 12]
     rotation: 0
     state: enabled
-- name: blocks_message_debug_0
-  id: blocks_message_debug
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    en_uvec: 'True'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [824, 160.0]
-    rotation: 0
-    state: true
 - name: blocks_null_sink_0
   id: blocks_null_sink
   parameters:
@@ -67,15 +53,49 @@ blocks:
     bus_structure_sink: '[[0,],]'
     comment: ''
     num_inputs: '1'
-    type: byte
+    type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 376.0]
+    coordinate: [1136, 128.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: blocks_null_sink_1
+  id: blocks_null_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_sink: '[[0,],]'
+    comment: ''
+    num_inputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 376.0]
+    rotation: 0
+    state: enabled
+- name: blocks_null_sink_2
+  id: blocks_null_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_sink: '[[0,],]'
+    comment: ''
+    num_inputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1136, 248.0]
+    rotation: 0
+    state: enabled
 - name: blocks_null_source_0
   id: blocks_null_source
   parameters:
@@ -86,15 +106,34 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     num_outputs: '1'
-    type: byte
+    type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [296, 336.0]
+    coordinate: [272, 168.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: blocks_null_source_1
+  id: blocks_null_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_source: '[[0,],]'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_outputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 376.0]
+    rotation: 0
+    state: enabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -105,13 +144,32 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     samples_per_second: samp_rate
-    type: byte
+    type: complex
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [808, 292.0]
+    coordinate: [896, 132.0]
+    rotation: 0
+    state: enabled
+- name: blocks_throttle_1
+  id: blocks_throttle
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    ignoretag: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samples_per_second: samp_rate
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [624, 372.0]
     rotation: 0
     state: true
 - name: epy_block_0
@@ -121,20 +179,29 @@ blocks:
       \ GRC will instantiate the first class it finds\nto get ports and parameters\
       \ of your block. The arguments to __init__  will\nbe the parameters. All of\
       \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
-      from gnuradio import gr\nimport matlab.engine\nimport pmt\n\neng = matlab.engine.start_matlab()\n\
-      class blk(gr.sync_block):  # other base classes are basic_block, decim_block,\
-      \ interp_block\n    \"\"\"Embedded Python Block example - a simple multiply\
-      \ const\"\"\"\n\n    def __init__(self, filename = 'readingcenter91M64bins.txt'):\
-      \  # only default arguments here\n        \"\"\"arguments to this function show\
-      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
-      \   self,\n            name='Call MATLAB executive(filename)',   # will show\
-      \ up in GRC\n            in_sig=[np.byte],\n            out_sig=[np.byte]\n\
-      \            \n    \n        )\n        self.filename = filename\n        self.message_port_register_out(pmt.intern('chosen\
-      \ bins'))\n        # if an attribute with the same name as a parameter is found,\n\
-      \        # a callback is registered (properties work, too).\n        \n\n  \
-      \  def work(self, input_items, output_items):\n        whee = pmt.to_pmt(eng.executive(self.filename))\n\
-      \        self.message_port_pub(pmt.intern('chosen bins'), whee)\n        output_items[0][:]\
-      \ = 1\n        return len(output_items[0])\n"
+      from gnuradio import gr\nimport matlab.engine\nimport pmt\nimport os\nimport\
+      \ time\n\neng = matlab.engine.start_matlab()\nclass blk(gr.sync_block):  # other\
+      \ base classes are basic_block, decim_block, interp_block\n    \"\"\"Runs matlab\
+      \ executive function every time it registers that [filename] has been modified\
+      \ and spits its output out as a message\\nOne caveat is that [filename] needs\
+      \ to already exist in the present directory, otherwise there'll be an error\
+      \ thrown saying that the file doesn't exist.\"\"\"\n\n    def __init__(self,\
+      \ filename = 'noise1kcos.txt'):  # only default arguments here\n        \"\"\
+      \"arguments to this function show up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n\
+      \            self,\n            name='Call MATLAB executive(filename)',   #\
+      \ will show up in GRC\n            in_sig=[np.complex64],\n            out_sig=[np.complex64]\n\
+      \            \n    \n        )\n        self.filename = filename\n        self.time1\
+      \ = os.path.getmtime(self.filename)\n        self.message_port_register_out(pmt.intern('chosen\
+      \ pattern'))\n        # if an attribute with the same name as a parameter is\
+      \ found,\n        # a callback is registered (properties work, too).\n     \
+      \   \n\n    def work(self, input_items, output_items):\n        self.time2 =\
+      \ os.path.getmtime(self.filename)\n        if(self.time2 != self.time1):\n \
+      \           time.sleep(1)\n            self.time1 = self.time2\n           \
+      \ print('aya, something changed!') #i think the reason why this goes through\
+      \ twice is because its catching on to when the file's still being written, although\
+      \ im not sure if dealing with that is even necessary\n            whee = pmt.to_pmt(int(eng.executive(self.filename)))\n\
+      \            self.message_port_pub(pmt.intern('chosen pattern'), whee)\n   \
+      \     \n        output_items[0][:] = 1\n        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -142,22 +209,108 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
-    _io_cache: ('Call MATLAB executive(filename)', 'blk', [('filename', "'readingcenter91M64bins.txt'")],
-      [('0', 'byte', 1)], [('0', 'byte', 1), ('chosen bins', 'message', 1)], 'Embedded
-      Python Block example - a simple multiply const', ['filename'])
+    _io_cache: ('Call MATLAB executive(filename)', 'blk', [('filename', "'noise1kcos.txt'")],
+      [('0', 'complex', 1)], [('0', 'complex', 1), ('chosen pattern', 'message', 1)],
+      "Runs matlab executive function every time it registers that [filename] has
+      been modified and spits its output out as a message\nOne caveat is that [filename]
+      needs to already exist in the present directory, otherwise there'll be an error
+      thrown saying that the file doesn't exist.", ['filename'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [512, 336.0]
+    coordinate: [424, 216.0]
     rotation: 0
-    state: true
+    state: enabled
+- name: epy_block_1
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport time\nimport subprocess\n\nclass blk(gr.sync_block):\
+      \  # other base classes are basic_block, decim_block, interp_block\n    \"\"\
+      \"Block to loop [script_name (the spectrum sampling block)] every [delay (5)]\
+      \ seconds and passing in [script_args]\"\"\"\n\n    def __init__(self, script_name='sandbox.py',\
+      \ delay = 5, script_args = '--filename ./noise1kcos.txt'):  # only default arguments\
+      \ here\n        \"\"\"arguments to this function show up as parameters in GRC\"\
+      \"\"\n        gr.sync_block.__init__(\n            self,\n            name='Loop\
+      \ Script',   # will show up in GRC\n            in_sig=[np.complex64],\n   \
+      \         out_sig=[np.complex64]\n        )\n        # if an attribute with\
+      \ the same name as a parameter is found,\n        # a callback is registered\
+      \ (properties work, too).\n        self.script_name = './' + script_name\n \
+      \       self.delay = delay\n        self.args = script_args\n        self.cmdlstr\
+      \ = self.script_name + ' ' + self.args\n        self.cmdlist = self.cmdlstr.split()\n\
+      \n    def work(self, input_items, output_items):\n        print('running the\
+      \ script', self.script_name, 'with args', self.args)\n        subprocess.run(self.cmdlist)\n\
+      \        print('finished')\n        time.sleep(self.delay)\n        output_items[0][:]\
+      \ = input_items[0]\n        return len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    script_args: '''--filename ./noise1kcos.txt'''
+    script_name: '''sandbox.py'''
+  states:
+    _io_cache: ('Loop Script', 'blk', [('script_name', "'sandbox.py'"), ('delay',
+      '5'), ('script_args', "'--filename ./noise1kcos.txt'")], [('0', 'complex', 1)],
+      [('0', 'complex', 1)], 'Block to loop [script_name (the spectrum sampling block)]
+      every [delay (5)] seconds and passing in [script_args]', ['delay', 'script_name'])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 372.0]
+    rotation: 0
+    state: enabled
+- name: epy_block_2
+  id: epy_block
+  parameters:
+    _source_code: "\"\"\"\nEmbedded Python Blocks:\n\nEach time this file is saved,\
+      \ GRC will instantiate the first class it finds\nto get ports and parameters\
+      \ of your block. The arguments to __init__  will\nbe the parameters. All of\
+      \ them are required to have default values!\n\"\"\"\n\nimport numpy as np\n\
+      from gnuradio import gr\nimport pmt\n\n\nclass blk(gr.sync_block):  # other\
+      \ base classes are basic_block, decim_block, interp_block\n    \"\"\"Embedded\
+      \ Python Block example - a simple multiply const\"\"\"\n\n    def __init__(self):\
+      \  # only default arguments here\n        \"\"\"arguments to this function show\
+      \ up as parameters in GRC\"\"\"\n        gr.sync_block.__init__(\n         \
+      \   self,\n            name='Message Reader',   # will show up in GRC\n    \
+      \        in_sig=[np.complex64],\n            out_sig=[np.complex64]\n      \
+      \  )\n        self.message_port_register_in(pmt.intern('msgin'))\n        self.set_msg_handler(pmt.intern('msgin'),\
+      \ self.handle_msg)\n        # if an attribute with the same name as a parameter\
+      \ is found,\n        # a callback is registered (properties work, too).\n  \
+      \      self.thingy = 1\n        \n    def handle_msg(self, msg):\n        self.thingy\
+      \ = pmt.to_python(msg)\n    def work(self, input_items, output_items):\n   \
+      \     print(self.thingy)\n        output_items[0][:] = input_items[0]\n    \
+      \    return len(output_items[0])\n"
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    _io_cache: ('Message Reader', 'blk', [], [('0', 'complex', 1), ('msgin', 'message',
+      1)], [('0', 'complex', 1)], 'Embedded Python Block example - a simple multiply
+      const', [])
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 232.0]
+    rotation: 0
+    state: enabled
 
 connections:
 - [blocks_null_source_0, '0', epy_block_0, '0']
+- [blocks_null_source_0, '0', epy_block_2, '0']
+- [blocks_null_source_1, '0', epy_block_1, '0']
 - [blocks_throttle_0, '0', blocks_null_sink_0, '0']
+- [blocks_throttle_1, '0', blocks_null_sink_1, '0']
 - [epy_block_0, '0', blocks_throttle_0, '0']
-- [epy_block_0, chosen bins, blocks_message_debug_0, print]
+- [epy_block_0, chosen pattern, epy_block_2, msgin]
+- [epy_block_1, '0', blocks_throttle_1, '0']
+- [epy_block_2, '0', blocks_null_sink_2, '0']
 
 metadata:
   file_format: 1
-  grc_version: v3.11.0.0git-38-g72311c07
