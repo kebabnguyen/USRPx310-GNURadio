@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: no_gui
     hier_block_src_path: '.:'
-    id: spectrum_sampler_pjfft
+    id: spectrum_sampler
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -22,7 +22,7 @@ options:
     run_options: run
     sizing_mode: fixed
     thread_safe_setters: ''
-    title: spectrum_sampler_pjfft
+    title: spectrum_sampler
     window_size: (1000,1000)
   states:
     bus_sink: false
@@ -168,7 +168,7 @@ blocks:
     label: output_filename
     short_id: ''
     type: str
-    value: ./readingcenter91M64bins.txt
+    value: ./91M64bins.txt
   states:
     bus_sink: false
     bus_source: false
@@ -281,7 +281,7 @@ blocks:
     ant7: '"RX2"'
     ant8: '"RX2"'
     ant9: '"RX2"'
-    bw0: samp_rate
+    bw0: '0'
     bw1: '0'
     bw10: '0'
     bw11: '0'
@@ -345,7 +345,7 @@ blocks:
     center_freq7: '0'
     center_freq8: '0'
     center_freq9: '0'
-    clock_rate: 200e6
+    clock_rate: 0e0
     clock_source0: ''
     clock_source1: ''
     clock_source2: ''
