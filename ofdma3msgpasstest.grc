@@ -330,7 +330,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [296, 1000.0]
+    coordinate: [464, 912.0]
     rotation: 0
     state: true
 - name: blocks_null_sink_1
@@ -366,7 +366,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [16, 1024.0]
+    coordinate: [16, 816.0]
     rotation: 0
     state: true
 - name: blocks_null_source_1
@@ -937,7 +937,6 @@ blocks:
     label7: ''
     label8: ''
     label9: ''
-    legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
     name: '""'
@@ -992,6 +991,22 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [648, 788.0]
+    rotation: 0
+    state: true
+- name: spectrum_sampler_0
+  id: spectrum_sampler
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fftlen: '64'
+    filename: ./91M64bins.txt
+    numsnaps: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [792, 1340.0]
     rotation: 0
     state: true
 - name: uhd_usrp_sink_0
@@ -1798,6 +1813,7 @@ connections:
 - [fft_vxx_0, '0', digital_ofdm_cyclic_prefixer_0, '0']
 - [fft_vxx_1, '0', blocks_complex_to_mag_squared_0, '0']
 - [sonny_ofdma_ofdma_tx_0, '0', fft_vxx_0, '0']
+- [uhd_usrp_source_0, '0', spectrum_sampler_0, '0']
 - [virtual_source_0, '0', digital_chunks_to_symbols_xx_0, '0']
 - [virtual_source_0_0, '0', digital_chunks_to_symbols_xx_0_0, '0']
 - [virtual_source_0_0_0, '0', digital_ofdm_carrier_allocator_cvc_0, '0']
@@ -1805,4 +1821,3 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: v3.11.0.0git-38-g72311c07
