@@ -4,9 +4,9 @@ close all
 
 % Initializations
 
-T = 50e-6; % pulsewidth
-BT = 50; % time-bandwidth product
-B = BT/T; % swept bandwidth
+T = 0.5e-3; % pulsewidth
+BT = 100; % time-bandwidth product
+B = BT/T; % swept bandwidth, ideal 0.2e6
 OVS = 10; % oversampling factor
 N = BT*OVS; % number of samples
 t_s = linspace(0,T,N); % time vector
@@ -26,6 +26,13 @@ fclose(fileID_re);
 fileID_im = fopen('CHIRPgen_im.txt','W');
 fwrite(fileID_im,imag(s),'float');
 fclose(fileID_im);
+
+% Flag for fft length
+
+nfft = 2*N-1; % fft length
+if nfft>16383 % upper limit for gnuradio
+    disp('thats a no from me dawg')
+end
 
 % Graph
 
