@@ -45,6 +45,28 @@ blocks:
     coordinate: [184, 12]
     rotation: 0
     state: enabled
+- name: analog_sig_source_x_0
+  id: analog_sig_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    amp: '1'
+    comment: ''
+    freq: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    phase: '0'
+    samp_rate: samp_rate
+    type: complex
+    waveform: analog.GR_COS_WAVE
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [360, 500.0]
+    rotation: 0
+    state: true
 - name: blocks_null_sink_0
   id: blocks_null_sink
   parameters:
@@ -78,7 +100,7 @@ blocks:
     bus_structure: null
     coordinate: [872, 376.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_null_sink_2
   id: blocks_null_sink
   parameters:
@@ -133,7 +155,7 @@ blocks:
     bus_structure: null
     coordinate: [216, 376.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: blocks_throttle_0
   id: blocks_throttle
   parameters:
@@ -205,7 +227,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    filename: '''noise1kcos.txt'''
+    filename: '''copytest2.bin'''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
@@ -263,7 +285,7 @@ blocks:
     bus_structure: null
     coordinate: [368, 372.0]
     rotation: 0
-    state: enabled
+    state: disabled
 - name: epy_block_2
   id: epy_block
   parameters:
@@ -300,13 +322,31 @@ blocks:
     coordinate: [944, 232.0]
     rotation: 0
     state: enabled
+- name: spectrum_sampler_v2_0
+  id: spectrum_sampler_v2
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    fftlen: '64'
+    filename: ./copytest2.bin
+    numsnaps: '4'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [888, 524.0]
+    rotation: 0
+    state: true
 
 connections:
+- [analog_sig_source_x_0, '0', blocks_throttle_1, '0']
 - [blocks_null_source_0, '0', epy_block_0, '0']
 - [blocks_null_source_0, '0', epy_block_2, '0']
 - [blocks_null_source_1, '0', epy_block_1, '0']
 - [blocks_throttle_0, '0', blocks_null_sink_0, '0']
 - [blocks_throttle_1, '0', blocks_null_sink_1, '0']
+- [blocks_throttle_1, '0', spectrum_sampler_v2_0, '0']
 - [epy_block_0, '0', blocks_throttle_0, '0']
 - [epy_block_0, chosen pattern, epy_block_2, msgin]
 - [epy_block_1, '0', blocks_throttle_1, '0']

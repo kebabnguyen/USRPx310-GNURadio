@@ -9,7 +9,7 @@ options:
     description: ''
     gen_cmake: 'On'
     gen_linking: dynamic
-    generate_options: qt_gui
+    generate_options: hb
     hier_block_src_path: '.:'
     id: spectrum_sampler_v2
     max_nouts: '0'
@@ -33,40 +33,6 @@ options:
     state: enabled
 
 blocks:
-- name: samp_rate
-  id: variable
-  parameters:
-    comment: ''
-    value: '32000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [184, 12]
-    rotation: 0
-    state: enabled
-- name: analog_sig_source_x_0
-  id: analog_sig_source_x
-  parameters:
-    affinity: ''
-    alias: ''
-    amp: '1'
-    comment: ''
-    freq: '3000'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    phase: '0'
-    samp_rate: samp_rate
-    type: complex
-    waveform: analog.GR_COS_WAVE
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [176, 188.0]
-    rotation: 0
-    state: true
 - name: blocks_complex_to_mag_squared_0
   id: blocks_complex_to_mag_squared
   parameters:
@@ -99,41 +65,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [544, 576.0]
+    coordinate: [688, 544.0]
     rotation: 0
     state: enabled
-- name: blocks_file_sink_0
-  id: blocks_file_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    append: 'False'
-    comment: ''
-    file: filename
-    type: float
-    unbuffered: 'False'
-    vlen: fftlen
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [768, 564.0]
-    rotation: 0
-    state: true
-- name: blocks_message_debug_0
-  id: blocks_message_debug
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    en_uvec: 'True'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [560, 672.0]
-    rotation: 0
-    state: true
 - name: blocks_nlog10_ff_0
   id: blocks_nlog10_ff
   parameters:
@@ -170,25 +104,23 @@ blocks:
     coordinate: [352, 336.0]
     rotation: 0
     state: true
-- name: blocks_throttle_0
-  id: blocks_throttle
+- name: customblocka_togglewrite_filesink_0
+  id: customblocka_togglewrite_filesink
   parameters:
     affinity: ''
     alias: ''
+    append: 'False'
     comment: ''
-    ignoretag: 'True'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: complex
-    vlen: '1'
+    filename: filename
+    type: float
+    vlen: fftlen
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [448, 228.0]
+    coordinate: [928, 644.0]
     rotation: 0
-    state: true
+    state: enabled
 - name: epy_block_0
   id: epy_block
   parameters:
@@ -208,11 +140,12 @@ blocks:
       \ found,\n        # a callback is registered (properties work, too).\n     \
       \   self.togglemsg = True\n        self.counter = 0\n\n    def work(self, input_items,\
       \ output_items):\n        self.counter = self.counter + len(output_items[0][:])\n\
-      \        print(len(input_items[0]))\n        output_items[0][:] = input_items[0]\n\
-      \        if(self.counter == 96):\n            self.togglemsg = not self.togglemsg\n\
+      \        print(self.counter)\n        output_items[0][:] = input_items[0]\n\
+      \        if(self.counter > 96):\n            self.togglemsg = not self.togglemsg\n\
       \            #print(len(output_items[0][:]), output_items[0][:])\n         \
-      \   self.message_port_pub(pmt.intern('toggle message'), pmt.to_pmt(self.togglemsg))\n\
-      \            #self.counter = 0\n        \n        \n        return len(output_items[0])\n"
+      \   self.counter = 0\n            self.message_port_pub(pmt.intern('toggle message'),\
+      \ pmt.to_pmt(self.togglemsg))\n            time.sleep(5)\n        \n       \
+      \ \n        return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
@@ -275,7 +208,7 @@ blocks:
     label: output_filename
     short_id: ''
     type: str
-    value: ./copytest.bin
+    value: ./copytest2.bin
   states:
     bus_sink: false
     bus_source: false
@@ -317,9 +250,9 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [520, 140.0]
+    coordinate: [440, 212.0]
     rotation: 0
-    state: disabled
+    state: enabled
 - name: virtual_sink_0
   id: virtual_sink
   parameters:
@@ -348,19 +281,16 @@ blocks:
     state: true
 
 connections:
-- [analog_sig_source_x_0, '0', blocks_throttle_0, '0']
 - [blocks_complex_to_mag_squared_0, '0', blocks_nlog10_ff_0, '0']
-- [blocks_copy_0, '0', blocks_file_sink_0, '0']
+- [blocks_copy_0, '0', customblocka_togglewrite_filesink_0, '0']
 - [blocks_nlog10_ff_0, '0', epy_block_0, '0']
 - [blocks_stream_to_vector_0, '0', fft_vxx_0, '0']
-- [blocks_throttle_0, '0', virtual_sink_0, '0']
 - [epy_block_0, '0', blocks_copy_0, '0']
 - [epy_block_0, toggle message, blocks_copy_0, en]
-- [epy_block_0, toggle message, blocks_message_debug_0, print]
+- [epy_block_0, toggle message, customblocka_togglewrite_filesink_0, reset]
 - [fft_vxx_0, '0', blocks_complex_to_mag_squared_0, '0']
 - [pad_source_0, '0', virtual_sink_0, '0']
 - [virtual_source_0, '0', blocks_stream_to_vector_0, '0']
 
 metadata:
   file_format: 1
-  grc_version: v3.11.0.0git-38-g72311c07
