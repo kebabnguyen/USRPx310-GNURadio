@@ -620,7 +620,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    filename: '''airtest.pls'''
+    filename: '''bababooey.bin'''
     maxoutbuf: '0'
     minoutbuf: '0'
   states:
@@ -847,7 +847,6 @@ blocks:
     label7: ''
     label8: ''
     label9: ''
-    legend: 'True'
     maxoutbuf: '0'
     minoutbuf: '0'
     name: '""'
@@ -1729,4 +1728,3 @@ connections:
 
 metadata:
   file_format: 1
-  grc_version: v3.11.0.0git-38-g72311c07
