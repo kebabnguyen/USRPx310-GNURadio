@@ -1,4 +1,4 @@
-function freesections = sectionscroll(occupiedbins,sections)
+function freepatterns = sectionscroll(occupiedbins,sections)
 % comb through sections to find ones that don't overlap w occupiedbins
 %   we have a vector of the occupied bins and a table of the section blocks
 % we wish to get rid of the blocks that overlap with the occupied bins
@@ -17,7 +17,6 @@ for i = 1:length(sections(:,1))
         freeind(i,:) = 0;
     end
 end
-frijole = sections(nonzeros(freeind),:);
-freesections = frijole;
+freepatterns = freeind;
 
 end

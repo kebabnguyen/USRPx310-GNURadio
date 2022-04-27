@@ -1,4 +1,4 @@
-function occbins = ppbin_v4(filename, numsnaps, guardbands) %add a threshold control?
+function occbins = ppbin_v4(filename, fftlen, guardbands) %add a threshold control?
 
 %ppbin_v4 given freq domain data, output what bins seem to be occupied
 %looks at how many frequency domain samples there are, 
@@ -11,7 +11,7 @@ function occbins = ppbin_v4(filename, numsnaps, guardbands) %add a threshold con
 f = fopen(filename,'rb'); %open up file
 v = fread(f,Inf,'float'); %read in data from file
 vallen = length(v); %how many entries are in data?
-fftlen = ceil(vallen/numsnaps); %how long are our fft samples?
+numsnaps = ceil(vallen/fftlen); %how long are our fft samples?
 breakval = reshape(v,[fftlen numsnaps]); %break v up into fftlen rows and numsnaps columns
 
 avgs = mean(breakval,2);
