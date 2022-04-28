@@ -4,17 +4,18 @@ close all
 
 % Initializations
 
-T = 0.5e-3; % pulsewidth
-BT = 100; % time-bandwidth product
+T = 0.5; % pulsewidth
+BT = 2500; % time-bandwidth product
 B = BT/T; % swept bandwidth, ideal 0.2e6
-OVS = 10; % oversampling factor
+OVS = 3; % oversampling factor
 N = BT*OVS; % number of samples
 t_s = linspace(0,T,N); % time vector
 
 % Baseband chirp generation
 
+freq = (B/T)*t_s;
 LFM = exp(1i*pi*(B/T)*t_s.^2); % LFM
-s = [LFM zeros(1,N)]; % pulse and listening interval
+s = LFM; % pulse and listening interval
 s = s/norm(s); % power normalizing
 
 % Writing binary to text file
@@ -45,3 +46,6 @@ legend('\Re(s)','\Im(s)')
 xlabel('Normalized Time (1 \cdot T)')
 ylabel('Amplitude')
 title('LFM')
+
+figure(2)
+plot(t_s,freq/B)

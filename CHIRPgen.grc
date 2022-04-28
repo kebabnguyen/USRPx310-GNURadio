@@ -48,7 +48,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '100'
+    value: '1000'
   states:
     bus_sink: false
     bus_source: false
@@ -72,7 +72,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '10'
+    value: '6'
   states:
     bus_sink: false
     bus_source: false
@@ -84,7 +84,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '0.0005'
+    value: '0.5'
   states:
     bus_sink: false
     bus_source: false
@@ -113,9 +113,9 @@ blocks:
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
-    start: '902000000'
-    step: '200000'
-    stop: '928000000'
+    start: '914500000'
+    step: '50000'
+    stop: '915500000'
     value: '915000000'
     widget: counter_slider
   states:
@@ -155,10 +155,10 @@ blocks:
     min_len: '200'
     orient: QtCore.Qt.Horizontal
     rangeType: float
-    start: '0'
+    start: '-50'
     step: '0.01'
-    stop: '10'
-    value: '0.5'
+    stop: '0'
+    value: '-20'
     widget: counter_slider
   states:
     bus_sink: false
@@ -395,8 +395,8 @@ blocks:
     width8: '1'
     width9: '1'
     ylabel: Amplitude
-    ymax: '0.1'
-    ymin: '-0.1'
+    ymax: '0.02'
+    ymin: '-0.02'
     yunit: '""'
   states:
     bus_sink: false
